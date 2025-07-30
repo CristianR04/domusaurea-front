@@ -1,0 +1,66 @@
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background-image: url('/src/assets/fondo9.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+    
+.custom-input {
+  background-color: #1a1a1a !important; /* fondo oscuro permanente */
+  color: #ffffff;
+  border: 1px solid #d4af37;
+}
+
+.custom-input::placeholder {
+  color: #aaaaaa;
+}
+
+.custom-input:focus {
+  background-color: #1a1a1a !important; /* evitar que se vuelva blanco al enfocar */
+  color: #ffffff !important;
+  border-color: #f5c542;
+  box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+}
+
+.custom-button {
+  background-color: #1a1a1a;     /* Fondo negro suave */
+  color: #ffffff;                /* Texto blanco */
+  border: 1px solid #d4af37;     /* Borde dorado */
+  transition: all 0.3s ease;
+}
+
+.custom-button:hover {
+  background-color: #d4af37;     /* Fondo dorado al pasar el mouse */
+  color: #1a1a1a;                /* Texto negro */
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); /* Brillo dorado */
+}
+
+a {
+  color: #d4af37; /* Dorado */
+  text-decoration: none;
+}
+
+a:hover {
+  color: #f5c542; /* Dorado más claro al pasar el mouse */
+}
+
+.custom-input {
+  width: 115%;
+  margin-left: -7.5%;
+}
+
+
+
+
+
