@@ -1,48 +1,38 @@
 <template>
   <MainLayout>
     <div class="container py-5 animate__animated animate__fadeIn">
-      <form class="row justify-content-center">
+      <form class="row justify-content-center" @submit.prevent="guardarRecordatorio">
         <div class="col-12 mb-4">
           <h3 class="text-center titulo-principal">Recordatorio de Pago</h3>
         </div>
 
         <div class="col-md-6 mb-3">
           <label class="form-label">ID Inquilino</label>
-          <input type="number" class="form-input-local" required />
+          <input type="number" class="form-input-local" v-model="form.id_inquilino" required />
         </div>
 
         <div class="col-md-6 mb-3">
           <label class="form-label">ID Propiedad</label>
-          <input type="number" class="form-input-local" required />
+          <input type="number" class="form-input-local" v-model="form.id_propiedad" required />
         </div>
 
         <div class="col-md-6 mb-3">
           <label class="form-label">Concepto</label>
-          <input
-            type="text"
-            class="form-input-local"
-            placeholder="Ej: Arriendo, Servicios, etc."
-            required
-          />
+          <input type="text" class="form-input-local" v-model="form.concepto" placeholder="Ej: Arriendo, Servicios, etc." required />
         </div>
 
         <div class="col-md-6 mb-3">
           <label class="form-label">Monto</label>
-          <input
-            type="number"
-            step="0.01"
-            class="form-input-local"
-            placeholder="$"
-          />
+          <input type="number" step="0.01" class="form-input-local" v-model="form.monto" placeholder="$" required />
         </div>
 
         <div class="col-md-6 mb-3">
           <label class="form-label">Fecha del Recordatorio</label>
-          <input type="date" class="form-input-local" required />
+          <input type="date" class="form-input-local" v-model="form.fecha_recordatorio" required />
         </div>
 
         <div class="col-md-6 mb-3 d-flex align-items-center">
-          <input type="checkbox" id="repetirMensualmente" class="me-2" />
+          <input type="checkbox" id="repetirMensualmente" class="me-2" v-model="form.repetir_mensualmente" />
           <label for="repetirMensualmente" class="form-label mb-0">
             ¿Repetir Mensualmente?
           </label>
@@ -50,23 +40,43 @@
 
         <div class="col-12 mb-3">
           <label class="form-label">Notas</label>
-          <textarea
-            class="form-input-local"
-            rows="3"
-            placeholder="Opcional..."
-          ></textarea>
+          <textarea class="form-input-local" rows="3" v-model="form.notas" placeholder="Opcional..."></textarea>
         </div>
+
         <div class="text-center mt-4">
-            <button class="btn custom-btn px-5 mb-5 text-black">Guardar Recordatorio</button>
-          </div>
+          <button class="btn custom-btn px-5 mb-5 text-black">Guardar Recordatorio</button>
+        </div>
       </form>
     </div>
   </MainLayout>
 </template>
 
 <script setup>
+import { reactive } from 'vue'
 import MainLayout from '@/layouts/MainLayout.vue'
+import axios from 'axios'
+
+const form = reactive({
+  id_inquilino: '',
+  id_propiedad: '',
+  concepto: '',
+  monto: '',
+  fecha_recordatorio: '',
+  repetir_mensualmente: false,
+  notas: ''
+})
+
+const guardarRecordatorio = async () => {
+  try {
+    await axios.post('http://127.0.0.1:8000/api/recordatorios', form)
+    alert('Recordatorio guardado con éxito')
+  } catch (error) {
+    console.error(error)
+    alert('Hubo un error al guardar el recordatorio')
+  }
+}
 </script>
+
 
 <style scoped>
 @import 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css';

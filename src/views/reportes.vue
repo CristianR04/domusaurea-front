@@ -1,146 +1,182 @@
 <template>
   <MainLayout>
-  <div class="animate__animated animate__fadeIn">
-    <div class="container mt-5 py-5 pt-5" style="height: 140vh; display: flex; flex-direction: column; animate__animated animate__fadeIn ">
-      <h2 class="titulo-principal text-center">Registrar Reporte</h2>
+    <div class="animate__animated animate__fadeIn">
+      <div class="container mt-5 py-5 pt-5" style="height: 140vh; display: flex; flex-direction: column;">
+        <h2 class="titulo-principal text-center">Registrar Reporte</h2>
 
-      <div class="form-scroll">
-        <form class="row g-4">
-          <!-- Información General -->
-          <div class="col-12">
-            <h5>Datos Generales de la Propiedad</h5>
-          </div>
+        <div class="form-scroll">
+          <form class="row g-4" @submit.prevent="guardarReporte">
+            <!-- Información General -->
+            <div class="col-12">
+              <h5>Datos Generales de la Propiedad</h5>
+            </div>
 
-          <div class="col-md-6">
-            <label class="form-label">Nombre de la Propiedad</label>
-            <input type="text" class="form-input-local" required />
-          </div>
+            <div class="col-md-6">
+              <label class="form-label">Nombre de la Propiedad</label>
+              <input type="text" class="form-input-local" v-model="formulario.nombre_propiedad" required />
+            </div>
 
-          <div class="col-md-6">
-            <label class="form-label">Dirección</label>
-            <input type="text" class="form-input-local" required />
-          </div>
+            <div class="col-md-6">
+              <label class="form-label">Dirección</label>
+              <input type="text" class="form-input-local" v-model="formulario.direccion" required />
+            </div>
 
-          <div class="col-md-6">
-            <label class="form-label">Matrícula Inmobiliaria</label>
-            <input type="text" class="form-input-local" required />
-          </div>
+            <div class="col-md-6">
+              <label class="form-label">Matrícula Inmobiliaria</label>
+              <input type="text" class="form-input-local" v-model="formulario.matricula_inmobiliaria" required />
+            </div>
 
-          <div class="col-md-3">
-            <label class="form-label">Tipo de Propiedad</label>
-            <input type="text" class="form-input-local" required />
-          </div>
+            <div class="col-md-3">
+              <label class="form-label">Tipo de Propiedad</label>
+              <input type="text" class="form-input-local" v-model="formulario.tipo_propiedad" required />
+            </div>
 
-          <div class="col-md-3">
-            <label class="form-label">Uso del Inmueble</label>
-            <input type="text" class="form-input-local" required />
-          </div>
+            <div class="col-md-3">
+              <label class="form-label">Uso del Inmueble</label>
+              <input type="text" class="form-input-local" v-model="formulario.uso_inmueble" required />
+            </div>
 
-          <div class="col-md-6">
-            <label class="form-label">Estado</label>
-            <input type="text" class="form-input-local" required />
-          </div>
+            <div class="col-md-6">
+              <label class="form-label">Estado</label>
+              <input type="text" class="form-input-local" v-model="formulario.estado" required />
+            </div>
 
-          <div class="col-md-3">
-            <label class="form-label">ID Inquilino</label>
-            <input type="number" class="form-input-local" required />
-          </div>
+            <div class="col-md-3">
+              <label class="form-label">ID Inquilino</label>
+              <input type="number" class="form-input-local" v-model="formulario.id_inquilino" required />
+            </div>
 
-          <div class="col-md-3">
-            <label class="form-label">Nombre Inquilino</label>
-            <input type="text" class="form-input-local" required />
-          </div>
+            <div class="col-md-3">
+              <label class="form-label">Nombre Inquilino</label>
+              <input type="text" class="form-input-local" v-model="formulario.nombre_inquilino" required />
+            </div>
 
-          <!-- Ingresos -->
-          <div class="col-12 mt-4">
-            <h5>Ingresos</h5>
-          </div>
+            <!-- Ingresos -->
+            <div class="col-12 mt-4">
+              <h5>Ingresos</h5>
+            </div>
 
-          <div class="col-md-6">
-            <label class="form-label">Arriendo Mensual</label>
-            <input type="number" class="form-input-local" required />
-          </div>
+            <div class="col-md-6">
+              <label class="form-label">Arriendo Mensual</label>
+              <input type="number" class="form-input-local" v-model="formulario.arriendo_mensual" required />
+            </div>
 
-          <div class="col-md-6">
-            <label class="form-label">Estado de Pago</label>
-            <input type="text" class="form-input-local" required />
-          </div>
+            <div class="col-md-6">
+              <label class="form-label">Estado de Pago</label>
+              <input type="text" class="form-input-local" v-model="formulario.estado_pago" required />
+            </div>
 
-          <!-- Egresos -->
-          <div class="col-12 mt-4">
-            <h5>Egresos</h5>
-          </div>
+            <!-- Egresos -->
+            <div class="col-12 mt-4">
+              <h5>Egresos</h5>
+            </div>
 
-          <div class="col-md-3">
-            <label class="form-label">Mantenimiento</label>
-            <input type="number" class="form-input-local" required />
-          </div>
+            <div class="col-md-3">
+              <label class="form-label">Mantenimiento</label>
+              <input type="number" class="form-input-local" v-model="formulario.mantenimiento" required />
+            </div>
 
-          <div class="col-md-3">
-            <label class="form-label">Administración</label>
-            <input type="number" class="form-input-local" required />
-          </div>
+            <div class="col-md-3">
+              <label class="form-label">Administración</label>
+              <input type="number" class="form-input-local" v-model="formulario.administracion" required />
+            </div>
 
-          <div class="col-md-3">
-            <label class="form-label">Impuestos</label>
-            <input type="number" class="form-input-local" required />
-          </div>
+            <div class="col-md-3">
+              <label class="form-label">Impuestos</label>
+              <input type="number" class="form-input-local" v-model="formulario.impuestos" required />
+            </div>
 
-          <div class="col-md-3">
-            <label class="form-label">Servicios Públicos</label>
-            <input type="number" class="form-input-local" required />
-          </div>
+            <div class="col-md-3">
+              <label class="form-label">Servicios Públicos</label>
+              <input type="number" class="form-input-local" v-model="formulario.servicios_publicos" required />
+            </div>
 
-          <!-- Saldos -->
-          <div class="col-12 mt-4">
-            <h5>Saldos</h5>
-          </div>
+            <!-- Saldos -->
+            <div class="col-12 mt-4">
+              <h5>Saldos</h5>
+            </div>
 
-          <div class="col-md-6">
-            <label class="form-label">Ingreso Mensual</label>
-            <input type="number" class="form-input-local" required />
-          </div>
+            <div class="col-md-6">
+              <label class="form-label">Ingreso Mensual</label>
+              <input type="number" class="form-input-local" v-model="formulario.ingreso_mensual" required />
+            </div>
 
-          <div class="col-md-6">
-            <label class="form-label">Egreso Mensual</label>
-            <input type="number" class="form-input-local" required />
-          </div>
+            <div class="col-md-6">
+              <label class="form-label">Egreso Mensual</label>
+              <input type="number" class="form-input-local" v-model="formulario.egreso_mensual" required />
+            </div>
 
-          <!-- Seguimiento -->
-          <div class="col-12 mt-4">
-            <h5>Seguimiento</h5>
-          </div>
+            <!-- Seguimiento -->
+            <div class="col-12 mt-4">
+              <h5>Seguimiento</h5>
+            </div>
 
-          <div class="col-md-6">
-            <label class="form-label">Contrato</label>
-            <input type="text" class="form-input-local" required />
-          </div>
+            <div class="col-md-6">
+              <label class="form-label">Contrato</label>
+              <input type="text" class="form-input-local" v-model="formulario.contrato" required />
+            </div>
 
-          <div class="col-md-6">
-            <label class="form-label">Impuestos</label>
-            <input type="text" class="form-input-local" required />
-          </div>
+            <div class="col-md-6">
+              <label class="form-label">Impuestos</label>
+              <input type="text" class="form-input-local" v-model="formulario.seguimiento_impuestos" required />
+            </div>
 
-          <div class="col-12">
-            <label class="form-label">Observaciones</label>
-            <textarea class="form-input-local" rows="4"></textarea>
-          </div>
+            <div class="col-12">
+              <label class="form-label">Observaciones</label>
+              <textarea class="form-input-local" rows="4" v-model="formulario.observaciones"></textarea>
+            </div>
 
-        <!-- Botón -->
-        <div class="text-center mt-4">
-            <button class="btn custom-btn px-5 mb-5 text-black">Guardar Reporte</button>
-          </div>
-        </form>
+            <!-- Botón -->
+            <div class="text-center mt-4">
+              <button class="btn custom-btn px-5 mb-5 text-black" type="submit">
+                Guardar Reporte
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-    
   </MainLayout>
 </template>
 
 <script setup>
+import { reactive } from 'vue'
+import axios from 'axios'
 import MainLayout from '@/layouts/MainLayout.vue'
+
+const formulario = reactive({
+  nombre_propiedad: '',
+  direccion: '',
+  matricula_inmobiliaria: '',
+  tipo_propiedad: '',
+  uso_inmueble: '',
+  estado: '',
+  id_inquilino: '',
+  nombre_inquilino: '',
+  arriendo_mensual: '',
+  estado_pago: '',
+  mantenimiento: '',
+  administracion: '',
+  impuestos: '',
+  servicios_publicos: '',
+  ingreso_mensual: '',
+  egreso_mensual: '',
+  contrato: '',
+  seguimiento_impuestos: '',
+  observaciones: ''
+})
+
+const guardarReporte = async () => {
+  try {
+    const response = await axios.post('http://localhost:8000/api/owner_create_report', formulario)
+    console.log('Reporte guardado:', response.data)
+    // Aquí puedes redirigir o mostrar mensaje
+  } catch (error) {
+    console.error('Error al guardar el reporte:', error)
+  }
+}
 </script>
+
 
 <style scoped>
 @import 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css';
