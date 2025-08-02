@@ -6,33 +6,67 @@
           <h3 class="text-center titulo-principal">Recordatorio de Pago</h3>
         </div>
 
+        <!-- ID USER -->
         <div class="col-md-6 mb-3">
-          <label class="form-label">ID Inquilino</label>
-          <input type="number" class="form-input-local" v-model="form.id_inquilino" required />
+          <label class="form-label">ID Usuario</label>
+          <input
+            type="number"
+            class="form-input-local"
+            v-model="form.id_user"
+            required
+          />
         </div>
 
         <div class="col-md-6 mb-3">
           <label class="form-label">ID Propiedad</label>
-          <input type="number" class="form-input-local" v-model="form.id_propiedad" required />
+          <input
+            type="number"
+            class="form-input-local"
+            v-model="form.id_propiedad"
+            required
+          />
         </div>
 
         <div class="col-md-6 mb-3">
           <label class="form-label">Concepto</label>
-          <input type="text" class="form-input-local" v-model="form.concepto" placeholder="Ej: Arriendo, Servicios, etc." required />
+          <input
+            type="text"
+            class="form-input-local"
+            v-model="form.concepto"
+            placeholder="Ej: Arriendo, Servicios, etc."
+            required
+          />
         </div>
 
         <div class="col-md-6 mb-3">
           <label class="form-label">Monto</label>
-          <input type="number" step="0.01" class="form-input-local" v-model="form.monto" placeholder="$" required />
+          <input
+            type="number"
+            step="0.01"
+            class="form-input-local"
+            v-model="form.monto"
+            placeholder="$"
+            required
+          />
         </div>
 
         <div class="col-md-6 mb-3">
           <label class="form-label">Fecha del Recordatorio</label>
-          <input type="date" class="form-input-local" v-model="form.fecha_recordatorio" required />
+          <input
+            type="date"
+            class="form-input-local"
+            v-model="form.fecha_recordatorio"
+            required
+          />
         </div>
 
         <div class="col-md-6 mb-3 d-flex align-items-center">
-          <input type="checkbox" id="repetirMensualmente" class="me-2" v-model="form.repetir_mensualmente" />
+          <input
+            type="checkbox"
+            id="repetirMensualmente"
+            class="me-2"
+            v-model="form.repetir_mensualmente"
+          />
           <label for="repetirMensualmente" class="form-label mb-0">
             ¿Repetir Mensualmente?
           </label>
@@ -40,11 +74,18 @@
 
         <div class="col-12 mb-3">
           <label class="form-label">Notas</label>
-          <textarea class="form-input-local" rows="3" v-model="form.notas" placeholder="Opcional..."></textarea>
+          <textarea
+            class="form-input-local"
+            rows="3"
+            v-model="form.notas"
+            placeholder="Opcional..."
+          ></textarea>
         </div>
 
         <div class="text-center mt-4">
-          <button class="btn custom-btn px-5 mb-5 text-black">Guardar Recordatorio</button>
+          <button class="btn custom-btn px-5 mb-5 text-black">
+            Guardar Recordatorio
+          </button>
         </div>
       </form>
     </div>
@@ -56,26 +97,28 @@ import { reactive } from 'vue'
 import MainLayout from '@/layouts/MainLayout.vue'
 import axios from 'axios'
 
+const hoy = new Date().toISOString().split('T')[0]
+
 const form = reactive({
-  id_inquilino: '',
+  id_user: '',
   id_propiedad: '',
   concepto: '',
   monto: '',
-  fecha_recordatorio: '',
+  fecha_recordatorio: hoy,
   repetir_mensualmente: false,
   notas: ''
 })
 
 const guardarRecordatorio = async () => {
   try {
-    await axios.post('http://127.0.0.1:8000/api/recordatorios', form)
-    alert('Recordatorio guardado con éxito')
+    const response = await axios.post('http://127.0.0.1:8000/api/recordatorios', form)
+    console.log('Recordatorio guardado:', response.data)
   } catch (error) {
-    console.error(error)
-    alert('Hubo un error al guardar el recordatorio')
+    console.error('Error al guardar recordatorio:', error.response?.data || error.message)
   }
 }
 </script>
+
 
 
 <style scoped>
@@ -89,7 +132,7 @@ const guardarRecordatorio = async () => {
 }
 
 .form-input-local {
-   background-color: white !important;
+  background-color: white !important;
   border: 2px solid #eee200 !important;
   border-radius: 8px;
   padding: 0.5rem 1rem;
@@ -99,6 +142,11 @@ const guardarRecordatorio = async () => {
   outline: none;
   box-shadow: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input-local:focus {
+  border-color: #d4af37;
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
 }
 
 textarea.form-input-local {
@@ -174,23 +222,23 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-.custom-btn {
-  background-color: white;
-  color: #eee200;
-  border: 2px solid #eee200;
-  padding: 0.75rem 2.5rem;
-  font-size: 1.2rem;
-  font-weight: 600;
-  border-radius: 12px;
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
+  .custom-btn {
+    background-color: white;
+    color: #eee200;
+    border: 2px solid #eee200;
+    padding: 0.75rem 2.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 12px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
 
-.custom-btn:hover {
-  background-color: #eee200;
-  color: #000;
-  transform: scale(1.05);
-}
+  .custom-btn:hover {
+    background-color: #eee200;
+    color: #000;
+    transform: scale(1.05);
+  }
 
 .titulo-principal {
   font-size: 2.5rem;

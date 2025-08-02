@@ -1,181 +1,218 @@
 <template>
   <MainLayout>
-  <div class="animate__animated animate__fadeIn">
-    <div class="container mt-5 py-5 pt-5" style="height: 140vh; display: flex; flex-direction: column;">
-      <h2 class="titulo-principal text-center">Agregar Propiedad</h2>
-    <div class="form-scroll">
-        <form class="row g-4">
-        <!-- Información del Inmueble -->
-        <div class="col-12">
-          <h5>Información del inmueble</h5>
+    <div class="animate__animated animate__fadeIn">
+      <div class="container mt-5 py-5 pt-5" style="height: 140vh; display: flex; flex-direction: column;">
+        <h2 class="titulo-principal text-center">Agregar Propiedad</h2>
+
+        <div class="form-scroll">
+          <form class="row g-4" @submit.prevent="registrarPropiedad">
+            <!-- Información del Inmueble -->
+            <div class="col-12">
+              <h5>Información del inmueble</h5>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Número de Matrícula</label>
+              <input v-model="form.numero_matricula" type="text" class="form-input-local" required />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">ID Catastral</label>
+              <input v-model="form.id_catastral" type="text" class="form-input-local" required />
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Dirección del Inmueble</label>
+              <input v-model="form.direccion_inmueble" type="text" class="form-input-local" required />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Área del Terreno</label>
+              <input v-model="form.area_terreno" type="text" class="form-input-local" required />
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Uso</label>
+              <input v-model="form.uso" type="text" class="form-input-local" required />
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Estrato</label>
+              <input v-model="form.estrato" type="text" class="form-input-local" required />
+            </div>
+
+            <div class="col-md-12">
+              <button type="button" class="btn custom-btn" @click="mostrarModal = true">Agregar Documento</button>
+            </div>
+
+            <!-- Datos del Propietario -->
+            <div class="col-12 mt-4">
+              <h5>Datos del propietario</h5>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Nombre del Propietario</label>
+              <input v-model="form.nombre_propietario" type="text" class="form-input-local" required />
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Tipo de Identificación</label>
+              <select v-model="form.tipo_id" class="form-input-local" required>
+                <option disabled value="">Seleccione</option>
+                <option>Cédula</option>
+                <option>Pasaporte</option>
+                <option>NIT</option>
+              </select>
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Número de ID</label>
+              <input v-model="form.numero_id" type="text" class="form-input-local" required />
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Estado Civil</label>
+              <select v-model="form.estado_civil" class="form-input-local" required>
+                <option disabled value="">Seleccione</option>
+                <option>Soltero(a)</option>
+                <option>Casado(a)</option>
+                <option>Divorciado(a)</option>
+                <option>Viudo(a)</option>
+              </select>
+            </div>
+
+            <div class="col-md-8">
+              <label class="form-label">Dirección del Propietario</label>
+              <input v-model="form.direccion_propietario" type="text" class="form-input-local" required />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Teléfono</label>
+              <input v-model="form.telefono" type="text" class="form-input-local" required />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Correo</label>
+              <input v-model="form.correo" type="email" class="form-input-local" required />
+            </div>
+
+            <div class="text-center mt-4">
+              <button class="btn custom-btn px-5 text-black" type="submit">Registrarse</button>
+            </div>
+          </form>
         </div>
 
-        <div class="col-md-6">
-          <label class="form-label">Número de Matrícula</label>
-          <input type="text" class="form-input-local" required />
+        <!-- MODAL -->
+        <div v-if="mostrarModal" class="modal-overlay">
+          <div class="modal-content">
+            <h5 class="mb-3">Subir Documento(s)</h5>
+
+            <div class="archivos-grid mb-3">
+              <div
+                v-for="(item, index) in archivos"
+                :key="index"
+                class="archivo-card"
+              >
+                <label class="form-label">Archivo {{ index + 1 }}</label>
+                <input type="text" class="form-control" v-model="item.id_propiedad" placeholder="ID de la propiedad" required />
+
+                <input type="file" class="form-control mb-2 mt-3" accept=".jpg,.jpeg,.png,.pdf,.docx,.zip" required @change="e => item.archivo = e.target.files[0]"/>
+
+                <label class="form-label">Descripción</label>
+                <input type="text" class="form-control" v-model="item.descripcion" placeholder="Descripción del archivo"/>
+
+                <div class="text-end mt-2" v-if="archivos.length > 1">
+                  <button class="btn btn-sm btn-danger" @click="eliminarArchivo(index)">
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-end">
+              <button class="btn btn-warning me-2" @click="agregarArchivo">
+                + Agregar otro archivo
+              </button>
+              <button class="btn btn-secondary me-2" @click="mostrarModal = false">
+                Cancelar
+              </button>
+              <button class="btn btn-success" @click="guardarDocumentos">Guardar</button>
+            </div>
+          </div>
         </div>
 
-        <div class="col-md-6">
-          <label class="form-label">ID Catastral</label>
-          <input type="text" class="form-input-local" required />
-        </div>
-
-        <div class="col-md-12">
-          <label class="form-label">Dirección del Inmueble</label>
-          <input type="text" class="form-input-local" required />
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">Área del Terreno</label>
-          <input type="text" class="form-input-local" required />
-        </div>
-
-        <div class="col-md-3">
-          <label class="form-label">Uso</label>
-          <input type="text" class="form-input-local" required />
-        </div>
-
-        <div class="col-md-3">
-          <label class="form-label">Estrato</label>
-          <input type="text" class="form-input-local" required />
-        </div>
-
-        <div class="col-md-12">
-          <button type="button" class="btn custom-btn" @click="mostrarModal = true">Agregar Documento</button>
-        </div>
-        
-        <!-- Datos del Propietario -->
-        <div class="col-12 mt-4">
-          <h5>Datos del propietario</h5>
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">Nombre del Propietario</label>
-          <input type="text" class="form-input-local" required />
-        </div>
-
-        <div class="col-md-3">
-          <label class="form-label">Tipo de Identificación</label>
-          <select class="form-input-local" required>
-            <option disabled value="">Seleccione</option>
-            <option>Cédula</option>
-            <option>Pasaporte</option>
-            <option>NIT</option>
-          </select>
-        </div>
-
-        <div class="col-md-3">
-          <label class="form-label">Número de ID</label>
-          <input type="text" class="form-input-local" required />
-        </div>
-
-        <div class="col-md-4">
-          <label class="form-label">Estado Civil</label>
-          <select class="form-input-local" required>
-            <option disabled value="">Seleccione</option>
-            <option>Soltero(a)</option>
-            <option>Casado(a)</option>
-            <option>Divorciado(a)</option>
-            <option>Viudo(a)</option>
-          </select>
-        </div>
-
-        <div class="col-md-8">
-          <label class="form-label">Dirección del Propietario</label>
-          <input type="text" class="form-input-local" required />
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">Teléfono</label>
-          <input type="text" class="form-input-local" required />
-        </div>
-
-        <div class="col-md-6">
-          <label class="form-label">Correo</label>
-          <input type="email" class="form-input-local" required />
-        </div>
-
-        <div class="text-center mt-4">
-          <button class="btn custom-btn px-5 text-black">Registrarse</button>
-        </div>
-      </form>
-    </div>
-      
-<div v-if="mostrarModal" class="modal-overlay">
-  <div class="modal-content">
-    <h5 class="mb-3">Subir Documento(s)</h5>
-
-    <!-- Contenedor tipo grid -->
-    <div class="archivos-grid mb-3">
-      <div
-        v-for="(item, index) in archivos"
-        :key="index"
-        class="archivo-card"
-      >
-        <label class="form-label">Archivo {{ index + 1 }}</label>
-        <input type="text" class="form-control" placeholder="ID del archivo" required></input>
-            <input
-            type="file"
-            class="form-control mb-2 mt-3"
-            accept=".jpg,.jpeg,.png,.pdf,.docx,.zip"
-            required
-            @change="e => item.archivo = e.target.files[0]"
-            />
-
-            <label class="form-label">Descripción</label>
-            <input
-            type="text"
-            class="form-control"
-            v-model="item.descripcion"
-            placeholder="Descripción del archivo"
-            />
-
-        <div class="text-end mt-2" v-if="archivos.length > 1">
-          <button class="btn btn-sm btn-danger" @click="eliminarArchivo(index)">
-            Eliminar
-          </button>
-        </div>
       </div>
     </div>
-
-    
-
-    <div class="text-end">
-    <button class="btn btn-warning me-2" @click="agregarArchivo">
-      + Agregar otro archivo
-    </button>
-      <button class="btn btn-secondary me-2" @click="mostrarModal = false">
-        Cancelar
-      </button>
-      <button class="btn btn-success">Guardar</button>
-    </div>
-  </div>
-</div>
-
-    </div>
-  </div>
-    
   </MainLayout>
 </template>
 
-
 <script setup>
 import { ref } from 'vue'
+import axios from 'axios'
 import MainLayout from '@/layouts/MainLayout.vue'
 
+// Formulario principal
+const form = ref({
+  numero_matricula: '',
+  id_catastral: '',
+  direccion_inmueble: '',
+  area_terreno: '',
+  uso: '',
+  estrato: '',
+  nombre_propietario: '',
+  tipo_id: '',
+  numero_id: '',
+  estado_civil: '',
+  direccion_propietario: '',
+  telefono: '',
+  correo: ''
+})
+
+// Documentos
 const mostrarModal = ref(false)
+const archivos = ref([{ archivo: null, descripcion: '', id_propiedad: '' }])
 
-// Arreglo para manejar múltiples archivos
-const archivos = ref([{ archivo: null, descripcion: '' }])
-
-// Función para añadir un nuevo input
 const agregarArchivo = () => {
-  archivos.value.push({ archivo: null, descripcion: '' })
+  archivos.value.push({ archivo: null, descripcion: '', id_propiedad: '' })
 }
-
-// Función para eliminar uno si se desea (opcional)
 const eliminarArchivo = (index) => {
   archivos.value.splice(index, 1)
+}
+
+// Envío de propiedad
+const registrarPropiedad = async () => {
+  try {
+    const response = await axios.post('http://127.0.0.1:8000/api/propiedades', form.value)
+    alert('Propiedad registrada con éxito')
+  } catch (error) {
+    console.error(error)
+    alert('Error al registrar la propiedad')
+  }
+}
+
+// Envío de documentos (modal)
+const guardarDocumentos = async () => {
+  try {
+    for (const item of archivos.value) {
+      const formData = new FormData()
+      formData.append('id_propiedad', item.id_propiedad)
+      formData.append('archivo', item.archivo)
+      formData.append('descripcion', item.descripcion)
+
+      await axios.post('http://127.0.0.1:8000/api/documentos', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+    }
+
+    alert('Documentos guardados correctamente')
+    mostrarModal.value = false
+    archivos.value = [{ archivo: null, descripcion: '', id_propiedad: '' }]
+  } catch (error) {
+    console.error(error)
+    alert('Error al guardar los documentos')
+  }
 }
 </script>
 .form-scroll {

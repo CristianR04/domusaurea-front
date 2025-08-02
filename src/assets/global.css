@@ -56,11 +56,29 @@ a:hover {
 }
 
 .custom-input {
+  width: 250%;
+  margin-left: -80%;
+}
+
+.input-custom {
   width: 115%;
   margin-left: -7.5%;
 }
 
+.input-custom {
+  background-color: #1a1a1a !important; /* fondo oscuro permanente */
+  color: #ffffff;
+  border: 1px solid #d4af37;
+}
 
+.input-custom::placeholder {
+  color: #aaaaaa;
+}
 
-
+.input-custom:focus {
+  background-color: #1a1a1a !important; /* evitar que se vuelva blanco al enfocar */
+  color: #ffffff !important;
+  border-color: #f5c542;
+  box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+}
 

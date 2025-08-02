@@ -98,7 +98,7 @@ import MainLayout from '@/layouts/MainLayout.vue'
 
 .form-group input:focus {
   border-color: #d6cb00;
-  box-shadow: 0 0 8px rgba(238, 226, 0, 0.4);
+  box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
   background-color: #fff;
   outline: none;
 }

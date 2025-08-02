@@ -17,18 +17,27 @@ const mostrarinicio = () => {
 <template>
   <AuthLayout>
   <div class="animate__animated animate__fadeIn">
-    <div class="rounded p-4 shadow" style="width: 18rem; animate__animated animate__fadeIn ">
+    <div class="rounded p-4 shadow animate__animated animate_FadeIn" style="width: 18rem; ">
       <div class="text-center mb-4">
         <img src="../assets/domusaurea.png" class="logo mb-3 w-100 h-50" alt="Logo" />
         <h2 style="color: #eee200">Iniciar Sesión</h2>
       </div>
 
       <form @submit.prevent="mostrarinicio">
+
+      <div class="mb-3">
+            <label class="form-label text-white">Rol</label>
+            <select class="form-select input-custom" required>
+              <option disabled value="">Seleccione un tipo</option>
+              <option>Propietario</option>
+              <option>Inquilino</option>
+            </select>
+          </div>
         <div class="mb-3">
           <label for="email" class="form-label text-white">Correo electrónico</label>
           <input
             type="email"
-            class="form-control custom-input"
+            class="form-control input-custom"
             id="email"
             placeholder="Ingrese su correo"
             required
@@ -39,7 +48,7 @@ const mostrarinicio = () => {
           <label for="password" class="form-label text-white">Contraseña</label>
           <input
             type="password"
-            class="form-control custom-input"
+            class="form-control input-custom"
             id="password"
             placeholder="Ingrese su contraseña"
             required

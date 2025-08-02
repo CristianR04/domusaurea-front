@@ -168,7 +168,7 @@ const formulario = reactive({
 
 const guardarReporte = async () => {
   try {
-    const response = await axios.post('http://localhost:8000/api/owner_create_report', formulario)
+    const response = await axios.post('http://localhost:8000/api/reportes', formulario)
     console.log('Reporte guardado:', response.data)
     // Aquí puedes redirigir o mostrar mensaje
   } catch (error) {
