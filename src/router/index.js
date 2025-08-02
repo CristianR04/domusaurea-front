@@ -1,6 +1,6 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '../views/login.vue'
+import Login from '../views/Login.vue'
 import Register from '../views/registrar.vue'
 import Index from '../views/Index.vue'
 import Menu from '../views/Menu.vue'

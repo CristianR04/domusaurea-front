@@ -11,12 +11,56 @@ const form = reactive({
   password:''
 })
 
-const mostrarinicio = () => {
-  mensaje.value = 'Inicio de sesión simulado ✅'
-  setTimeout(() => {
-    router.push('/Menu')
-  }, 1000)
-}
+const mostrarinicio = async () => {
+  mensaje.value = '';
+  error.value = '';
+
+  try {
+    // 1. Hacer login
+    const response = await axios.post('http://127.0.0.1:8000/api/login', {
+      correo: formulario.email,
+      contrasena: formulario.password
+    });
+
+    // 2. Guardar token en localStorage
+    const token = response.data.token;
+    localStorage.setItem('token', token);
+
+    // 3. Obtener datos del usuario usando el token
+    const userResponse = await axios.get('http://127.0.0.1:8000/api/user', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const usuario = userResponse.data.user;
+    const rol = usuario.rol;
+
+    // 4. Mostrar mensaje
+    mensaje.value = 'Inicio de sesión exitoso ✅';
+
+    // 5. Redireccionar según el rol
+    setTimeout(() => {
+      if (rol === 'propietario') {
+        router.push('/Menu');
+      } else if (rol === 'inquilino') {
+        router.push('/menu2');
+      } else {
+        router.push('/inicio'); // ruta genérica por defecto
+      }
+    }, 1000);
+
+  } catch (err) {
+    // Manejo de errores
+    if (err.response && err.response.status === 401) {
+      error.value = 'Credenciales incorrectas.';
+    } else {
+      error.value = 'Error al iniciar sesión.';
+    }
+    console.error('Error en el login:', err);
+  }
+};
+
 </script>
 
 <template>
