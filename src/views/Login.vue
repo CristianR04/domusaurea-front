@@ -1,10 +1,15 @@
 <script setup>
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AuthLayout from '../layouts/AuthLayout.vue'
 
 const mensaje = ref('')
 const router = useRouter()
+const form = reactive({
+  rol='',
+  email='',
+  password=''
+})
 
 const mostrarinicio = () => {
   mensaje.value = 'Inicio de sesión simulado ✅'
@@ -27,7 +32,7 @@ const mostrarinicio = () => {
 
       <div class="mb-3">
             <label class="form-label text-white">Rol</label>
-            <select class="form-select input-custom" required>
+            <select class="form-select input-custom" v-model="form.rol" required>
               <option disabled value="">Seleccione un tipo</option>
               <option>Propietario</option>
               <option>Inquilino</option>
@@ -40,6 +45,7 @@ const mostrarinicio = () => {
             class="form-control input-custom"
             id="email"
             placeholder="Ingrese su correo"
+            v-model="form.email"
             required
           />
         </div>
@@ -51,6 +57,7 @@ const mostrarinicio = () => {
             class="form-control input-custom"
             id="password"
             placeholder="Ingrese su contraseña"
+            v-model="form.password"
             required
           />
         </div>
