@@ -6,9 +6,9 @@ import AuthLayout from '../layouts/AuthLayout.vue'
 const mensaje = ref('')
 const router = useRouter()
 const form = reactive({
-  rol='',
-  email='',
-  password=''
+  rol:'',
+  email:'',
+  password:''
 })
 
 const mostrarinicio = () => {
