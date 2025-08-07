@@ -1,19 +1,30 @@
 <template>
   <MainLayout>
     <div class="container py-5 animate__animated animate__fadeIn">
-      <form class="row justify-content-center">
+      <form class="row justify-content-center" @submit.prevent="guardarRecordatorio">
         <div class="col-12 mb-4">
           <h3 class="text-center titulo-principal">Recordatorio de Pago</h3>
         </div>
 
+        <!-- ID USER -->
         <div class="col-md-6 mb-3">
-          <label class="form-label">ID Inquilino</label>
-          <input type="number" class="form-input-local" required />
+          <label class="form-label">ID Usuario</label>
+          <input
+            type="number"
+            class="form-input-local"
+            v-model="form.id_user"
+            required
+          />
         </div>
 
         <div class="col-md-6 mb-3">
           <label class="form-label">ID Propiedad</label>
-          <input type="number" class="form-input-local" required />
+          <input
+            type="number"
+            class="form-input-local"
+            v-model="form.id_propiedad"
+            required
+          />
         </div>
 
         <div class="col-md-6 mb-3">
@@ -21,6 +32,7 @@
           <input
             type="text"
             class="form-input-local"
+            v-model="form.concepto"
             placeholder="Ej: Arriendo, Servicios, etc."
             required
           />
@@ -32,17 +44,29 @@
             type="number"
             step="0.01"
             class="form-input-local"
+            v-model="form.monto"
             placeholder="$"
+            required
           />
         </div>
 
         <div class="col-md-6 mb-3">
           <label class="form-label">Fecha del Recordatorio</label>
-          <input type="date" class="form-input-local" required />
+          <input
+            type="date"
+            class="form-input-local"
+            v-model="form.fecha_recordatorio"
+            required
+          />
         </div>
 
         <div class="col-md-6 mb-3 d-flex align-items-center">
-          <input type="checkbox" id="repetirMensualmente" class="me-2" />
+          <input
+            type="checkbox"
+            id="repetirMensualmente"
+            class="me-2"
+            v-model="form.repetir_mensualmente"
+          />
           <label for="repetirMensualmente" class="form-label mb-0">
             ¿Repetir Mensualmente?
           </label>
@@ -53,20 +77,49 @@
           <textarea
             class="form-input-local"
             rows="3"
+            v-model="form.notas"
             placeholder="Opcional..."
           ></textarea>
         </div>
+
         <div class="text-center mt-4">
-            <button class="btn custom-btn px-5 mb-5 text-black">Guardar Recordatorio</button>
-          </div>
+          <button class="btn custom-btn px-5 mb-5 text-black">
+            Guardar Recordatorio
+          </button>
+        </div>
       </form>
     </div>
   </MainLayout>
 </template>
 
 <script setup>
+import { reactive } from 'vue'
 import MainLayout from '@/layouts/MainLayout.vue'
+import axios from 'axios'
+
+const hoy = new Date().toISOString().split('T')[0]
+
+const form = reactive({
+  id_user: '',
+  id_propiedad: '',
+  concepto: '',
+  monto: '',
+  fecha_recordatorio: hoy,
+  repetir_mensualmente: false,
+  notas: ''
+})
+
+const guardarRecordatorio = async () => {
+  try {
+    const response = await axios.post('http://127.0.0.1:8000/api/cxp/recordatorios', form)
+    console.log('Recordatorio guardado:', response.data)
+  } catch (error) {
+    console.error('Error al guardar recordatorio:', error.response?.data || error.message)
+  }
+}
 </script>
+
+
 
 <style scoped>
 @import 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css';
@@ -79,7 +132,7 @@ import MainLayout from '@/layouts/MainLayout.vue'
 }
 
 .form-input-local {
-   background-color: white !important;
+  background-color: white !important;
   border: 2px solid #eee200 !important;
   border-radius: 8px;
   padding: 0.5rem 1rem;
@@ -89,6 +142,11 @@ import MainLayout from '@/layouts/MainLayout.vue'
   outline: none;
   box-shadow: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input-local:focus {
+  border-color: #d4af37;
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
 }
 
 textarea.form-input-local {
@@ -164,23 +222,23 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-.custom-btn {
-  background-color: white;
-  color: #eee200;
-  border: 2px solid #eee200;
-  padding: 0.75rem 2.5rem;
-  font-size: 1.2rem;
-  font-weight: 600;
-  border-radius: 12px;
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
+  .custom-btn {
+    background-color: white;
+    color: #eee200;
+    border: 2px solid #eee200;
+    padding: 0.75rem 2.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 12px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
 
-.custom-btn:hover {
-  background-color: #eee200;
-  color: #000;
-  transform: scale(1.05);
-}
+  .custom-btn:hover {
+    background-color: #eee200;
+    color: #000;
+    transform: scale(1.05);
+  }
 
 .titulo-principal {
   font-size: 2.5rem;

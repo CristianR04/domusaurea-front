@@ -12,6 +12,11 @@
             </div>
 
             <div class="col-md-6">
+              <label class="form-label">Id de la Propiedad</label>
+              <input type="text" class="form-input-local" v-model="formulario.id_propiedad" required />
+            </div>
+
+            <div class="col-md-6">
               <label class="form-label">Nombre de la Propiedad</label>
               <input type="text" class="form-input-local" v-model="formulario.nombre_propiedad" required />
             </div>
@@ -48,7 +53,7 @@
 
             <div class="col-md-3">
               <label class="form-label">Nombre Inquilino</label>
-              <input type="text" class="form-input-local" v-model="formulario.nombre_inquilino" required />
+              <input type="text" class="form-input-local" v-model="formulario.inquilino" required />
             </div>
 
             <!-- Ingresos -->
@@ -111,15 +116,12 @@
               <h5>Seguimiento</h5>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-12">
               <label class="form-label">Contrato</label>
               <input type="text" class="form-input-local" v-model="formulario.contrato" required />
             </div>
 
-            <div class="col-md-6">
-              <label class="form-label">Impuestos</label>
-              <input type="text" class="form-input-local" v-model="formulario.seguimiento_impuestos" required />
-            </div>
+            
 
             <div class="col-12">
               <label class="form-label">Observaciones</label>
@@ -145,6 +147,7 @@ import axios from 'axios'
 import MainLayout from '@/layouts/MainLayout.vue'
 
 const formulario = reactive({
+  id_propiedad:'',
   nombre_propiedad: '',
   direccion: '',
   matricula_inmobiliaria: '',
@@ -152,7 +155,7 @@ const formulario = reactive({
   uso_inmueble: '',
   estado: '',
   id_inquilino: '',
-  nombre_inquilino: '',
+  inquilino: '',
   arriendo_mensual: '',
   estado_pago: '',
   mantenimiento: '',
@@ -162,7 +165,6 @@ const formulario = reactive({
   ingreso_mensual: '',
   egreso_mensual: '',
   contrato: '',
-  seguimiento_impuestos: '',
   observaciones: ''
 })
 

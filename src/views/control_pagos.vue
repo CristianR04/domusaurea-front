@@ -1,33 +1,105 @@
 <template>
   <MainLayout>
-    <div class="animate__animated animate__fadeIn">
-      
+    <div class="p-4 animate__animated animate__fadeIn">
+      <h2 class="text-xl font-bold mb-4">Buscar pagos por propiedad</h2>
 
+      <!-- Campo de búsqueda -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <input
+          v-model="id_propiedad"
+          placeholder="Id de la propiedad"
+          class="custom text-black"
+        />
+        <button @click="buscar" class="custom-button">
+          <i class="bi bi-search mr-1"></i> Buscar
+        </button>
+      </div>
+
+      <!-- Mostrar pagos -->
+      <div v-if="pagos.length > 0" class="mt-6 grid gap-4">
+        <div
+          v-for="pago in pagos"
+          :key="pago.id_pago"
+          class="resultado-box"
+        >
+          <h3 class="resultado-title">Pago registrado</h3>
+          <ul class="resultado-list">
+            <li><strong>Servicio:</strong> {{ pago.servicio }}</li>
+            <li><strong>Concepto:</strong> {{ pago.concepto }}</li>
+            <li><strong>Monto:</strong> ${{ pago.monto }}</li>
+            <li><strong>Fecha de pago:</strong> {{ new Date(pago.fecha_pago).toLocaleDateString() }}</li>
+          </ul>
+
+          <button
+            v-if="pago.archivo_url"
+            @click="descargarArchivo(pago.id_pago, pago.nombre_archivo)"
+            class="mt-2 custom-button"
+          >
+            <i class="bi bi-download mr-1"></i> Descargar soporte
+          </button>
+
+          <p v-else class="text-sm italic text-red-400 mt-2">Sin archivo adjunto</p>
+        </div>
+      </div>
+
+      <!-- Sin resultados -->
+      <div v-else-if="buscado" class="mt-4 text-red-500">
+        No se encontraron pagos para esta propiedad.
+      </div>
     </div>
   </MainLayout>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import axios from 'axios'
 import MainLayout from '@/layouts/MainLayout.vue'
 
-const modalAbierto = ref(false)
+const id_propiedad = ref('')
+const pagos = ref([])
+const buscado = ref(false)
 
-const archivo = ref({
-  archivo: null,
-  descripcion: ''
-})
-
-const guardarArchivo = () => {
-  if (!archivo.value.archivo || !archivo.value.descripcion) {
-    alert('Por favor, complete todos los campos.')
-    return
+const buscar = async () => {
+  try {
+    const res = await axios.get(`http://127.0.0.1:8000/api/pagos/${id_propiedad.value}`)
+    pagos.value = res.data.data
+    buscado.value = true
+  } catch (error) {
+    console.error('Error al buscar pagos:', error)
+    pagos.value = []
+    buscado.value = true
   }
-
-  console.log('Archivo guardado:', archivo.value)
-
-  modalAbierto.value = false
 }
+const descargarArchivo = async (id_pago, nombre_archivo) => {
+  try {
+    const response = await axios.get(`http://127.0.0.1:8000/api/pagos/descargar/${id_pago}`, {
+      responseType: 'blob',
+    })
+
+    const blob = new Blob([response.data], { type: 'application/pdf' })
+    const downloadUrl = window.URL.createObjectURL(blob)
+
+    const a = document.createElement('a')
+    a.href = downloadUrl
+    a.download = nombre_archivo || 'archivo.pdf'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    window.URL.revokeObjectURL(downloadUrl)
+  } catch (error) {
+    console.error('Error al descargar el archivo:', error)
+    alert('No se pudo descargar el archivo.')
+  }
+}
+/*const descargarArchivo = (url, nombre) => {
+  const a = document.createElement('a')
+  a.href = url
+  a.setAttribute('download', nombre || 'archivo.pdf')
+  a.setAttribute('target', '_blank')
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+}*/
 </script>
 
 

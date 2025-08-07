@@ -2,38 +2,32 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AuthLayout from '../layouts/AuthLayout.vue'
+import axios from 'axios'
 
 const mensaje = ref('')
 const router = useRouter()
 const form = reactive({
-  rol:'',
   email:'',
   password:''
 })
 
 const mostrarinicio = async () => {
-  mensaje.value = '';
-  error.value = '';
+  mensaje.value = ''
+  Error.value = ''
 
   try {
     // 1. Hacer login
     const response = await axios.post('http://127.0.0.1:8000/api/login', {
-      correo: formulario.email,
-      contrasena: formulario.password
+      correo: form.email,
+      contrasena: form.password
     });
 
     // 2. Guardar token en localStorage
     const token = response.data.token;
     localStorage.setItem('token', token);
 
-    // 3. Obtener datos del usuario usando el token
-    const userResponse = await axios.get('http://127.0.0.1:8000/api/user', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    const usuario = userResponse.data.user;
+    
+    const usuario = response.data.user;
     const rol = usuario.rol;
 
     // 4. Mostrar mensaje
@@ -52,10 +46,10 @@ const mostrarinicio = async () => {
 
   } catch (err) {
     // Manejo de errores
-    if (err.response && err.response.status === 401) {
-      error.value = 'Credenciales incorrectas.';
+    if (err.response && err.response.status === 409) {
+      Error.value = 'Credenciales incorrectas.';
     } else {
-      error.value = 'Error al iniciar sesión.';
+      Error.value = 'Error al iniciar sesión.';
     }
     console.error('Error en el login:', err);
   }
@@ -74,14 +68,7 @@ const mostrarinicio = async () => {
 
       <form @submit.prevent="mostrarinicio">
 
-      <div class="mb-3">
-            <label class="form-label text-white">Rol</label>
-            <select class="form-select input-custom" v-model="form.rol" required>
-              <option disabled value="">Seleccione un tipo</option>
-              <option>Propietario</option>
-              <option>Inquilino</option>
-            </select>
-          </div>
+      
         <div class="mb-3">
           <label for="email" class="form-label text-white">Correo electrónico</label>
           <input

@@ -1,45 +1,45 @@
 <template>
   <MainLayout>
-    <div class="form-wrapper animate__animated animate__fadeIn ">
+    <div class="form-wrapper animate__animated animate__fadeIn">
       <h2 class="title text-center">Registrar Inquilino</h2>
 
-      <form class="form-grid">
+      <form class="form-grid" @submit.prevent="guardarInquilino">
         <div class="form-col">
           <div class="form-group">
             <label for="id_propiedad">ID Propiedad</label>
-            <input type="text" id="id_propiedad" placeholder="Ej: 101" />
+            <input v-model="form.id_propiedad" type="text" id="id_propiedad" placeholder="Ej: 101" />
           </div>
 
           <div class="form-group">
             <label for="numero_id">Número de Identificación</label>
-            <input type="text" id="numero_id" placeholder="Ej: 1234567890" />
+            <input v-model="form.numero_id" type="text" id="numero_id" placeholder="Ej: 1234567890" />
           </div>
 
           <div class="form-group">
             <label for="correo">Correo Electrónico</label>
-            <input type="email" id="correo" placeholder="correo@ejemplo.com" maxlength="255" />
+            <input v-model="form.correo" type="email" id="correo" placeholder="correo@ejemplo.com" maxlength="255" />
           </div>
         </div>
 
         <div class="form-col">
           <div class="form-group">
-            <label for="id_inquilino">ID Inquilino</label>
-            <input type="text" id="id_inquilino" placeholder="Ej: 202" />
+            <label for="id_user">ID Inquilino</label>
+            <input v-model="form.id_user" type="text" id="id_user" placeholder="Ej: 202" />
           </div>
 
           <div class="form-group">
             <label for="usuario">Usuario</label>
-            <input type="text" id="usuario" placeholder="Nombre completo" maxlength="255" />
+            <input v-model="form.usuario" type="text" id="usuario" placeholder="Nombre completo" maxlength="255" />
           </div>
 
           <div class="form-group">
             <label for="telefono">Teléfono</label>
-            <input type="tel" id="telefono" placeholder="Ej: 3001234567" />
+            <input v-model="form.telefono" type="tel" id="telefono" placeholder="Ej: 3001234567" />
           </div>
         </div>
 
         <div class="form-actions">
-          <button type="button" class="btn-submit text-black">Guardar</button>
+          <button type="submit" class="btn-submit text-black">Guardar</button>
         </div>
       </form>
     </div>
@@ -48,7 +48,39 @@
 
 <script setup>
 import MainLayout from '@/layouts/MainLayout.vue'
+import { ref } from 'vue'
+import axios from 'axios'
+
+const form = ref({
+  id_propiedad: '',
+  id_user: '',
+  numero_id: '',
+  usuario: '',
+  correo: '',
+  telefono: '',
+})
+
+const guardarInquilino = async () => {
+  try {
+    const response = await axios.post('http://127.0.0.1:8000/api/inquilinos/asociar', form.value)
+    alert('Inquilino registrado correctamente')
+    console.log(response.data)
+    // Reset form (opcional)
+    form.value = {
+      id_propiedad: '',
+      id_user: '',
+      numero_id: '',
+      usuario: '',
+      correo: '',
+      telefono: '',
+    }
+  } catch (error) {
+    console.error(error)
+    alert('Hubo un error al registrar el inquilino')
+  }
+}
 </script>
+
 
 <style scoped>
 @import 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css';
@@ -94,6 +126,7 @@ import MainLayout from '@/layouts/MainLayout.vue'
   font-size: 1rem;
   transition: all 0.3s ease;
   box-shadow: inset 0 0 5px rgba(238, 226, 0, 0.1);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .form-group input:focus {

@@ -53,8 +53,8 @@ const registrar = async () => {
             <label class="form-label text-white">Rol</label>
             <select class="form-select custom-input" v-model="formulario.rol" required>
               <option disabled value="">Seleccione un tipo</option>
-              <option>Propietario</option>
-              <option>Inquilino</option>
+              <option>propietario</option>
+              <option>inquilino</option>
             </select>
           </div>
 

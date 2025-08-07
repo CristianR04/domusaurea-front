@@ -4,12 +4,9 @@
     <header class="navbar-inmo fixed-top px-4 py-4">
     <div class="container-fluid navbar-content">
       <h1 class="navbar-title">
-        Panel Inmobiliario
+        Propietario
       </h1>
       <nav class="navbar-links">
-        <router-link to="/menu2" class="nav-link logout">
-          <i class="bi bi-people-fill"></i> menu inquilinos
-        </router-link>
         <router-link to="/inicio" class="nav-link logout">
           <i class="bi bi-box-arrow-right"></i> Cerrar sesión
         </router-link>
@@ -19,7 +16,7 @@
     <div class="d-flex">
       <div class="menu-wrapper">
       <nav class="menu-navbar">
-        <h1 class="title text-black">Panel Inmobiliario</h1>
+        <h1 class="title text-black">Bienvenido Propietario</h1>
         <p class="subtitle text-black">Administra tus propiedades y clientes fácilmente.</p>
 
         <div class="menu-grid">
@@ -44,7 +41,7 @@
           </router-link>
         </div>
         <div class="menu-grid mt-3  ">
-          <router-link to="/reportes" class="menu-item">
+          <router-link to="/listar_reporte" class="menu-item">
             <i class="bi bi-bar-chart"></i>
             <span>Reportes</span>
           </router-link>

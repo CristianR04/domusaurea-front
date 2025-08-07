@@ -4,123 +4,187 @@
       <div class="container mt-5 py-5 pt-5" style="height: 130vh; display: flex; flex-direction: column;">
         <h2 class="titulo-principal text-center">Registrar Pagos</h2>
 
-        
         <!-- FORMULARIO -->
         <div class="form-scroll">
-          <form class="row g-4">
+          <form class="row g-4" @submit.prevent="registrarPago" enctype="multipart/form-data">
             <div class="col-12">
               <h5>Información del pago</h5>
             </div>
 
             <div class="col-md-6">
               <label class="form-label">Propiedad Asociada</label>
-              <select class="form-input-local" required>
+              <select class="form-input-local" v-model="pago.id_propiedad" required>
                 <option disabled value="">Seleccione propiedad</option>
-                <option>Propiedad 1</option>
-                <option>Propiedad 2</option>
+                <option v-for="prop in propiedades" :key="prop.id_propiedad" :value="prop.id_propiedad">
+                  {{ prop.id_propiedad }}
+                </option>
               </select>
             </div>
 
             <div class="col-md-6">
               <label class="form-label">Servicio</label>
-              <input type="text" class="form-input-local" placeholder="Ej: Agua, Luz" required />
+              <input type="text" class="form-input-local" placeholder="Ej: Agua, Luz" v-model="pago.servicio" />
             </div>
 
             <div class="col-md-6">
               <label class="form-label">Concepto</label>
-              <input type="text" class="form-input-local" placeholder="Ej: Pago de Julio" required />
+              <input type="text" class="form-input-local" placeholder="Ej: Pago de Julio" v-model="pago.concepto" />
             </div>
 
             <div class="col-md-3">
               <label class="form-label">Monto</label>
-              <input type="number" step="0.01" class="form-input-local" required />
+              <input type="number" step="0.01" class="form-input-local" v-model="pago.monto" required />
             </div>
 
             <div class="col-md-3">
-                <label class="form-label">Fecha de Pago</label>
-                <input type="date" class="form-input-local" required />
+              <label class="form-label">Fecha de Pago</label>
+              <input type="date" class="form-input-local" v-model="pago.fecha_pago" required />
             </div>
 
             <div class="text-center mb-3">
-                <button type="button" @click="modalAbierto = true" class="btn btn-sm custom-btn text-black">
-                    Agregar soporte
-                </button>
+              <button type="button" @click="modalAbierto = true" class="btn btn-sm custom-btn text-black">
+                Agregar soporte
+              </button>
+              <div v-if="archivo.archivo" class="text-success mt-2">{{ archivo.archivo.name }}</div>
             </div>
-
 
             <div class="col-12">
               <label class="form-label">Observaciones</label>
-              <textarea class="form-input-local" rows="3" placeholder="Escriba cualquier observación..."></textarea>
+              <textarea class="form-input-local" rows="3" placeholder="Escriba cualquier observación..." v-model="pago.observaciones"></textarea>
             </div>
 
             <div class="text-center mt-4">
-              <button class="btn custom-btn px-5 text-black">Guardar Pago</button>
+              <button type="submit" class="btn custom-btn px-5 text-black">Guardar Pago</button>
             </div>
           </form>
         </div>
       </div>
 
       <!-- MODAL -->
-<div v-if="modalAbierto" class="modal-overlay">
-  <div class="modal-content">
-    <h5 class="mb-3">Subir Documento</h5>
+      <div v-if="modalAbierto" class="modal-overlay">
+        <div class="modal-content">
+          <h5 class="mb-3">Subir Documento</h5>
 
-    <div class="archivo-card">
-      <label class="form-label">Archivo</label>
-      <input
-        type="file"
-        class="form-control mb-2 mt-2"
-        accept=".jpg,.jpeg,.png,.pdf,.docx,.zip"
-        required
-        @change="e => archivo.archivo = e.target.files[0]"
-      />
+          <div class="archivo-card">
+            <label class="form-label">Archivo</label>
+            <input
+              type="file"
+              class="form-control mb-2 mt-2"
+              accept=".jpg,.jpeg,.png,.pdf,.docx,.zip"
+              @change="handleArchivo"
+            />
 
-      <label class="form-label">Descripción</label>
-      <input
-        type="text"
-        class="form-control"
-        v-model="archivo.descripcion"
-        placeholder="Descripción del archivo"
-      />
-    </div>
+            <label class="form-label">Descripción</label>
+            <input
+              type="text"
+              class="form-control"
+              v-model="archivo.descripcion"
+              placeholder="Descripción del archivo"
+            />
+          </div>
 
-    <div class="text-end mt-4">
-      <button class="btn btn-secondary me-2" @click="modalAbierto = false">
-        Cancelar
-      </button>
-      <button class="btn btn-success" @click="guardarArchivo">
-        Guardar
-      </button>
-    </div>
-  </div>
-</div>
-
+          <div class="text-end mt-4">
+            <button class="btn btn-secondary me-2" @click="modalAbierto = false">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </MainLayout>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 import MainLayout from '@/layouts/MainLayout.vue'
 
+// Modal para archivo
 const modalAbierto = ref(false)
 
+// Datos del pago
+const pago = ref({
+  id_propiedad: '',
+  servicio: '',
+  concepto: '',
+  monto: '',
+  fecha_pago: '',
+  observaciones: ''
+})
+
+// Archivo de soporte
 const archivo = ref({
   archivo: null,
   descripcion: ''
 })
 
-const guardarArchivo = () => {
-  if (!archivo.value.archivo || !archivo.value.descripcion) {
-    alert('Por favor, complete todos los campos.')
-    return
+// Lista de propiedades
+const propiedades = ref([])
+
+// Cargar propiedades al montar el componente
+onMounted(async () => {
+  try {
+    const { data } = await axios.get('http://127.0.0.1:8000/api/propiedades') // <--- aquí se obtiene solo id_propiedad
+    propiedades.value = data
+  } catch (error) {
+    console.error('Error al cargar propiedades', error)
+  }
+})
+
+// Manejo de archivo adjunto
+const handleArchivo = (e) => {
+  archivo.value.archivo = e.target.files[0]
+}
+
+// Registrar el pago
+const registrarPago = async () => {
+  try {
+    const formData = new FormData()
+    formData.append('id_propiedad', pago.value.id_propiedad)
+    formData.append('servicio', pago.value.servicio || '')
+    formData.append('concepto', pago.value.concepto || '')
+    formData.append('monto', pago.value.monto)
+    formData.append('fecha_pago', pago.value.fecha_pago)
+    formData.append('observaciones', pago.value.observaciones || '')
+
+    if (archivo.value.archivo) {
+      formData.append('archivo', archivo.value.archivo)
+      formData.append('nombre_archivo', archivo.value.archivo.name)
+    }
+
+    await axios.post('http://127.0.0.1:8000/api/pagos-inquilino', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    alert('Pago registrado correctamente.')
+    limpiarFormulario()
+  } catch (error) {
+    console.error('Error al registrar el pago:', error)
+    alert('Error al registrar el pago.')
+  }
+}
+
+// Limpiar formulario después de enviar
+const limpiarFormulario = () => {
+  pago.value = {
+    id_propiedad: '',
+    servicio: '',
+    concepto: '',
+    monto: '',
+    fecha_pago: '',
+    observaciones: ''
   }
 
-  console.log('Archivo guardado:', archivo.value)
-
-  modalAbierto.value = false
+  archivo.value = {
+    archivo: null,
+    descripcion: ''
+  }
 }
 </script>
+
+
 
 
 <style scoped>

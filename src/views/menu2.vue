@@ -4,7 +4,7 @@
     <header class="navbar-inmo fixed-top px-4 py-4">
     <div class="container-fluid navbar-content">
       <h1 class="navbar-title">
-        Panel Inmobiliario
+        Inquilino
       </h1>
       <nav class="navbar-links">
         <router-link to="/inicio" class="nav-link logout">
@@ -16,8 +16,8 @@
     <div class="d-flex">
       <div class="menu-wrapper">
       <nav class="menu-navbar">
-        <h1 class="title text-black">Panel Inmobiliario</h1>
-        <p class="subtitle text-black">Administra tus propiedades y clientes fácilmente.</p>
+        <h1 class="title text-black">Bienvenido Inquilino</h1>
+        <p class="subtitle text-black">Administra tu contrato y realiza tus pagos</p>
 
         <div class="menu-grid">
           <router-link to="/recordatorios2" class="menu-item">
