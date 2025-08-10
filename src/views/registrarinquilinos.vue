@@ -62,7 +62,7 @@ const form = ref({
 
 const guardarInquilino = async () => {
   try {
-    const response = await axios.post('http://144.126.216.130:5173/api/inquilinos/asociar', form.value)
+    const response = await axios.post('http://144.126.216.130:8000/api/inquilinos/asociar', form.value)
     alert('Inquilino registrado correctamente')
     console.log(response.data)
     // Reset form (opcional)

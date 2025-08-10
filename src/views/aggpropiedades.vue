@@ -182,7 +182,7 @@ const eliminarArchivo = (index) => {
 // Envío de propiedad
 const registrarPropiedad = async () => {
   try {
-    const response = await axios.post('http://144.126.216.130:5173/api/propiedades', form.value)
+    const response = await axios.post('http://144.126.216.130:8000/api/propiedades', form.value)
     alert('Propiedad registrada con éxito')
   } catch (error) {
     console.error(error)
@@ -199,7 +199,7 @@ const guardarDocumentos = async () => {
       formData.append('archivo', item.archivo)
       formData.append('descripcion', item.descripcion)
 
-      await axios.post('http://127.0.0.1:8000/api/documentos', formData, {
+      await axios.post('http://144.126.216.130:8000/api/documentos', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

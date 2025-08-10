@@ -49,7 +49,7 @@ const resultado = ref(null)
 
 const buscar = async () => {
   try {
-    const res = await axios.get(`http://144.126.216.130:5173/api/buscar-propiedad/${id_catastral.value}`)
+    const res = await axios.get(`http://144.126.216.130:8000/api/buscar-propiedad/${id_catastral.value}`)
     resultado.value = res.data.data
   } catch (error) {
     console.error("Error al buscar propiedad:", error)

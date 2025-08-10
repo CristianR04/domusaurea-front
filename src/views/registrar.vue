@@ -21,7 +21,7 @@ const registrar = async () => {
   error.value = ''
 
   try {
-    await axios.post('http://144.126.216.130:5173/api/registro-user', {
+    await axios.post('http://144.126.216.130:8000/api/registro-user', {
       rol: formulario.rol,
       nombre: formulario.name,
       telefono: formulario.tel,

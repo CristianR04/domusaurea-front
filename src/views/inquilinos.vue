@@ -64,7 +64,7 @@ async function buscar() {
   if (!id) return
 
   try {
-    const response = await axios.get(`http://144.126.216.130:5173/api/inquilino/buscar/${id}`)
+    const response = await axios.get(`http://144.126.216.130:8000/api/inquilino/buscar/${id}`)
     resultados.value = [response.data.data]
   } catch (error) {
     resultados.value = []

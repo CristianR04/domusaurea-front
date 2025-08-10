@@ -124,7 +124,7 @@ const propiedades = ref([])
 // Cargar propiedades al montar el componente
 onMounted(async () => {
   try {
-    const { data } = await axios.get('http://144.126.216.130:5173/api/propiedades') // <--- aquí se obtiene solo id_propiedad
+    const { data } = await axios.get('http://144.126.216.130:8000/api/propiedades') // <--- aquí se obtiene solo id_propiedad
     propiedades.value = data
   } catch (error) {
     console.error('Error al cargar propiedades', error)
@@ -152,7 +152,7 @@ const registrarPago = async () => {
       formData.append('nombre_archivo', archivo.value.archivo.name)
     }
 
-    await axios.post('http://144.126.216.130:5173/api/pagos-inquilino', formData, {
+    await axios.post('http://144.126.216.130:8000/api/pagos-inquilino', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
