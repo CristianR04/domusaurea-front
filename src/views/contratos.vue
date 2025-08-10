@@ -43,7 +43,7 @@ const resultado = ref(null)
 
 const buscar = async () => {
   try {
-    const res = await axios.get(`http://127.0.0.1:8000/api/contratos/propiedad/${id_propiedad.value}`)
+    const res = await axios.get(`http://144.126.216.130:5173/api/contratos/propiedad/${id_propiedad.value}`)
     resultado.value = res.data.data[0]
   } catch (error) {
     console.error('Error al buscar contrato:', error)
@@ -52,7 +52,7 @@ const buscar = async () => {
 }
 
 const descargarContrato = (id_contrato) => {
-  const url = `http://127.0.0.1:8000/api/contratos/descargar/${id_contrato}`
+  const url = `http://144.126.216.130:5173/api/contratos/descargar/${id_contrato}`
   const a = document.createElement('a')
   a.href = url
   a.download = '' // permite descarga directa

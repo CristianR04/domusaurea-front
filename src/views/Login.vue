@@ -17,7 +17,7 @@ const mostrarinicio = async () => {
 
   try {
     // 1. Hacer login
-    const response = await axios.post('http://127.0.0.1:8000/api/login', {
+    const response = await axios.post('http://144.126.216.130:5173/api/login', {
       correo: form.email,
       contrasena: form.password
     });

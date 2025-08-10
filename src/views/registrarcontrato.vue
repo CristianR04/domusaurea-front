@@ -81,7 +81,7 @@ const form = reactive({
 
 const registrarContrato = async () => {
   try {
-    await axios.post('http://localhost:8000/api/contratos/generar', form)
+    await axios.post('http://144.126.216.130:5173/api/contratos/generar', form)
     alert('Contrato registrado correctamente')
   } catch (error) {
     console.error('Error al registrar contrato:', error)
