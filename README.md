@@ -197,11 +197,11 @@ sudo certbot --nginx -d tu-dominio.com
 
 ---
 
-✅ Con esto tendrás el **frontend en Vue desplegado en Nginx**, sirviendo contenido estático desde `dist/` y conectándose al backend de Laravel a través del mismo dominio.
+
 
 ---
 
-## 🛠 Troubleshooting
+## 🛠 notas
 
 - Si los cambios en `.env` no se reflejan, recuerda volver a ejecutar `npm run build`.  
 - Revisa los logs de Nginx en `/var/log/nginx/error.log` si ocurre algún error.  
@@ -220,7 +220,7 @@ Ejemplo de flujo:
 
 ---
 
-## 🔎 Troubleshooting
+## 🔎 notas
 
 - **CORS error:** Verifica que el backend tenga configurado correctamente CORS.  
 - **API no encontrada (404):** Revisa que `VITE_API_URL` apunte a la ruta `/api`.  
