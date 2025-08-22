@@ -130,5 +130,5 @@ Ejemplo de flujo:
 
 ## 👨‍💻 Autor
 
-Proyecto desarrollado por **Cristian Rojas**  
+Proyecto desarrollado por **Cristian Rojas** && **Yoiver Padilla** 
 Repositorio frontend: [domusaurea-front](https://github.com/CristianR04/domusaurea-front)
