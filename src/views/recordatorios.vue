@@ -111,7 +111,7 @@ const form = reactive({
 
 const guardarRecordatorio = async () => {
   try {
-    const response = await axios.post('http://144.126.216.130:8000/api/recordatorios', form)
+    const response = await axios.post('http://api-domusaurea.geekcorplab.com/api/recordatorios', form)
     console.log('Recordatorio guardado:', response.data)
   } catch (error) {
     console.error('Error al guardar recordatorio:', error.response?.data || error.message)

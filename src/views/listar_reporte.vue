@@ -62,7 +62,7 @@ const buscado = ref(false)
 
 const buscar = async () => {
   try {
-    const res = await axios.get(`http://144.126.216.130:8000/api/reportes?id_propiedad=${id_propiedad.value}`)
+    const res = await axios.get(`http://api-domusaurea.geekcorplab.com/api/reportes?id_propiedad=${id_propiedad.value}`)
     reportes.value = res.data.data
     buscado.value = true
   } catch (error) {
@@ -74,7 +74,7 @@ const buscar = async () => {
 }
 
 const descargarPDF = (id_propiedad) => {
-  const url = `http://144.126.216.130:8000/api/reportes/descargar/${id_propiedad}`
+  const url = `http://api-domusaurea.geekcorplab.com/api/reportes/descargar/${id_propiedad}`
   const a = document.createElement('a')
   a.href = url
   a.download = '' // permite descarga directa

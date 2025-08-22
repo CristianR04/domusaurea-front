@@ -61,7 +61,7 @@ const buscado = ref(false)
 
 const buscar = async () => {
   try {
-    const res = await axios.get(`http://144.126.216.130:8000/api/pagos/${id_propiedad.value}`)
+    const res = await axios.get(`http://api-domusaurea.geekcorplab.com/api/pagos/${id_propiedad.value}`)
     pagos.value = res.data.data
     buscado.value = true
   } catch (error) {
@@ -72,7 +72,7 @@ const buscar = async () => {
 }
 const descargarArchivo = async (id_pago, nombre_archivo) => {
   try {
-    const response = await axios.get(`http://144.126.216.130:8000/api/pagos/descargar/${id_pago}`, {
+    const response = await axios.get(`http://api-domusaurea.geekcorplab.com/api/pagos/descargar/${id_pago}`, {
       responseType: 'blob',
     })
 
