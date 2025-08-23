@@ -1,6 +1,6 @@
 <template>
   <MainLayout>
-    <div class="page-wrapper animate__animated animate__fadeIn">
+    <div class="page-wrapper animate__animated animate__fadeIn mt-5">
       <router-link to="/registrarinquilinos" class="menu-item">
         <i class="bi bi-people-fill"></i>
         <span>Registrar Inquilino</span>

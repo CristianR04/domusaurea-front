@@ -15,7 +15,7 @@ const goToRegister = () => router.push('/registrar')
       <img src="/src/assets/domusaurea.png" alt="Logo" class="logo mb-3 w-50 h-50" />
       <h1 class="display-5 fw-bold mb-3">¡Bienvenido a Domus Aurea!</h1>
       <p class="mb-4 fs-5">
-        El portal gamer donde la estrategia y la comunidad se encuentran.
+        Administra tus propiedades como propietario o revisa tus estado como inquilino
       </p>
       <div class="d-flex justify-content-center gap-3 flex-wrap">
         <router-link to="/inicio" class="btn custom-button px-4 py-2">Iniciar Sesión</router-link>
