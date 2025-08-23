@@ -23,7 +23,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('../src/assets/fondo9.jpg');
+  background-image: url('../src/assets/fondo1.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
